@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f5f244b4-07cc-4482-abc4-5f18f264836a" name="Default Changelist" comment="" />
+    <list default="true" id="f5f244b4-07cc-4482-abc4-5f18f264836a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/network/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/network/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/network/static/network/styles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/project4.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project4.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/models.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1f8bAwxur2SJBJaNSgE6Fh1bScN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -53,11 +72,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595602526231</updated>
-      <workItem from="1595602529709" duration="664000" />
+      <workItem from="1595602529709" duration="2425000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="413" y="310" key="EditFileWatcherDialog" timestamp="1595609166980">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state x="413" y="310" key="EditFileWatcherDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1595609166980" />
   </component>
 </project>
