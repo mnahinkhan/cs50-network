@@ -16,6 +16,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.7 (compbio) (3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="react.development" level="application" />
+    <orderEntry type="library" name="react-dom.development" level="application" />
+    <orderEntry type="library" name="babel" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

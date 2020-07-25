@@ -1,5 +1,7 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+    <div id="app"></div>
+    <script type="text/babel" src="{% static 'network/index.jsx' %}"></script>
 {% endblock %}
