@@ -9,7 +9,7 @@ from .models import User, Post
 
 def index(request):
     return render(request, "network/index.html", {
-        "posts": serializers.serialize('json', Post.objects.all())
+        "posts": serializers.serialize('json', Post.objects.all()),
     })
 
 
@@ -78,5 +78,11 @@ def get_posts(request, which_posts):
         # which_posts better be  a username
         posts = Post.objects.filter(writer__username=which_posts)
 
-    ordered_posts = posts.order_by("-time_modified").all()
-    return JsonResponse([post.serialize() for post in ordered_posts], safe=False)
+    ordered_posts = posts.order_by("-datetime_modified").all()
+    tzname = request.session.get('django_timezone')
+    return JsonResponse([post.serialize(tzname=tzname) for post in ordered_posts], safe=False)
+
+
+def get_username(request):
+    # Gives the client the logged in user's username. If not logged in, returns empty string.
+    return JsonResponse({"username": request.user.username})
