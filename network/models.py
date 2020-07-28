@@ -1,12 +1,40 @@
-from django.utils import timezone
+import random
 
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.timezone import localtime
 import pytz
 
 
+def random_color():
+    return User.FavColor(random.choice(User.FavColor.choices)[0])
+
+
+color_mapper_dict = {
+    'pink': 'lightpink',
+    'yellow': 'lightyellow',
+    'green': 'lightgreen',
+    'blue': 'lightblue',
+    'purple': 'pink'
+}
+
+
 class User(AbstractUser):
+    class FavColor(models.TextChoices):
+        PINK = 'pink', _('Pink')
+        YELLOW = 'yellow', _('Yellow')
+        GREEN = 'green', _('Green')
+        BLUE = 'blue', _('Blue')
+        PURPLE = 'purple', _('Purple')
+
+    color = models.CharField(
+        max_length=20,
+        choices=FavColor.choices,
+        default=random_color
+    )
+
     followers = models.ManyToManyField("self", related_name="following", blank=True, symmetrical=False)
 
 
@@ -32,5 +60,6 @@ class Post(models.Model):
             "author": self.writer.username,
             "content": self.content,
             "time_modified": localtime(self.datetime_modified).strftime('%b %d, %I:%M %p'),
-            "likes": self.likes()
+            "likes": self.likes(),
+            "color": color_mapper_dict[self.writer.color]
         }

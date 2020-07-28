@@ -2,6 +2,10 @@
 {% load static %}
 
 {% block body %}
+    <script>
+        const csrf_token = '{{ csrf_token }}';
+    </script>
+
     <div id="app"></div>
     <script type="text/babel" src="{% static 'network/index.jsx' %}"></script>
 {% endblock %}

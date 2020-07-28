@@ -1,7 +1,47 @@
 .post {
-  background-color: pink;
   margin-top: 30px;
   border-radius: 10px;
+  padding-top: 10px;
+}
+.post .time p {
+  text-align: right;
+  color: gray;
+  font-size: 14px;
+}
+.post .post-likes p {
+  font-size: 16px;
+  color: black;
+}
+.post .post-likes strong {
+  font-weight: bolder;
+}
+.post .post-submit button {
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 0;
+  border-radius: 4px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  filter: brightness(110%);
+}
+.post .post-submit button #submit-button-text {
+  filter: brightness(70%);
+}
+.post .post-submit button:hover {
+  filter: brightness(90%);
+}
+
+.post-content-editable textarea {
+  border: 0;
+  width: 100%;
+  resize: none;
+}
+.post-content-editable textarea::placeholder {
+  color: gray;
+}
+.post-content-editable textarea:focus {
+  border: 0;
+  outline: 0;
 }
 
 /*# sourceMappingURL=styles.css.map */

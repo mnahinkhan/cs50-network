@@ -1,11 +1,12 @@
+import json
+
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core import serializers
-from .models import User, Post
-
+from .models import User, Post, color_mapper_dict
 
 def index(request):
     return render(request, "network/index.html", {
@@ -85,4 +86,16 @@ def get_posts(request, which_posts):
 
 def get_username(request):
     # Gives the client the logged in user's username. If not logged in, returns empty string.
-    return JsonResponse({"username": request.user.username})
+    return JsonResponse({"username": request.user.username,
+                         "color": color_mapper_dict[request.user.color] if request.user.is_authenticated else ""})
+
+
+def post(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please be logged in to post to the server"}, status=400)
+
+    Post(writer=request.user, content=request.POST['content']).save()
+    return JsonResponse({"success": "message posted successfully!"})
+
