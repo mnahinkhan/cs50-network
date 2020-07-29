@@ -1,3 +1,27 @@
+class ProfileTitle extends React.Component {
+    render () {
+        return(
+            [<div key="profile-name-section" className="row profile-name-section">
+                <div className="col-12">
+                    <h3>{this.props.username}</h3>
+                </div>
+            </div>,
+            <div key="follow-info-section" className="row follow-info-section">
+                <div className="col-12">
+                    <p>
+                        <strong>
+                            {this.props.follower_no}
+                        </strong>
+                        &ensp;follower{this.props.follower_no!==1 ? 's' : ''}  &ensp;|
+                        &ensp;<strong>{this.props.following_no}</strong>
+                        &ensp; following</p>
+                </div>
+            </div>
+        ]
+        )
+    }
+}
+
 class EditablePost extends React.Component {
 
     constructor(props) {
@@ -138,13 +162,21 @@ class App extends React.Component {
 
     render() {
         const posts = this.props.posts;
-        const all_posts = posts.map(post => <Post text={post.content} key={post.id} author={post.author}
+        const all_posts = posts.length > 0 ? posts.map(post => <Post text={post.content} key={post.id} author={post.author}
                                                        time={post.time_modified} likes={post.likes}
-                                                       color={post.color}/>);
-        const editable_post = this.props.username !== "" && <EditablePost username={this.props.username}
-                                                                          color={this.props.user_color}/>;
+                                                                     color={post.color}/>) :
+            <p id="no-following-message">
+                Try following some people to see posts by them here!
+            </p>;
+        const editable_post = this.props.include_editable_post && <EditablePost username={this.props.editable_post_info.username}
+                                                                          color={this.props.editable_post_info.color}/>;
+
+        const profile_info = this.props.include_profile &&
+            <ProfileTitle username={this.props.profile_info.username} follower_no={this.props.profile_info.follower_no}
+                          following_no={this.props.profile_info.following_no}/>;
         return (
             <div className="container">
+                {profile_info}
                 {editable_post}
                 {all_posts}
             </div>
@@ -155,17 +187,25 @@ class App extends React.Component {
 
 function load_posts(which_posts) {
     // which_posts can be either "all" or a username or "following"
-
+    // Am I loading another profile?
+    const include_profile = which_posts !== "all" && which_posts !== "following";
     Promise.all(
         [
             fetch(`/posts/${which_posts}`).then(response=>response.json()),
-            fetch('/get-username').then(response=>response.json())
+            fetch('/get-username').then(response=>response.json()),
+            include_profile && fetch(`/get-profile-info/${which_posts}`).then(response => response.json())
         ])
         .then(all_responses => {
-        const [posts, editable_post_info] = all_responses;
-        const username = editable_post_info["username"];
-        const color = editable_post_info["color"];
-        ReactDOM.render(<App posts={posts} username={username} user_color={color}/>, document.querySelector("#app"));
+        const [posts, editable_post_info, profile_info] = all_responses;
+        console.log(profile_info);
+
+        ReactDOM.render(<App posts={posts} // whichever posts need to be shown
+                             include_editable_post={which_posts==="all" && editable_post_info.username!==""}
+                             editable_post_info={editable_post_info} // in case "all", then this comes useful for editable post
+                             include_profile={include_profile}
+                             profile_info={profile_info} // If we are checking out a user's profile page
+            />,
+            document.querySelector("#app"));
     })
         .catch(error => {
             // error is likely due to seeking "following" posts when authentication cannot be verified

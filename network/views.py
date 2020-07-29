@@ -100,3 +100,9 @@ def post(request):
 
     Post(writer=request.user, content=request.POST['content']).save()
     return JsonResponse({"success": "message posted successfully!"})
+
+
+def get_profile_info(request, profile_name):
+    user = User.objects.get(username=profile_name)
+    return JsonResponse({"username": user.username, "follower_no": user.number_of_followers(),
+                         "following_no": user.number_of_following()})

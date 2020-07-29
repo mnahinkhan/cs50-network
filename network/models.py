@@ -37,6 +37,12 @@ class User(AbstractUser):
 
     followers = models.ManyToManyField("self", related_name="following", blank=True, symmetrical=False)
 
+    def number_of_followers(self):
+        return len(self.followers.all())
+
+    def number_of_following(self):
+        return len(self.following.all())
+
 
 class Post(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
@@ -49,7 +55,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f'Post by {self.writer} saying "{self.content}".' \
-               f' Has {self.likes()} like{"s" if  self.likes() != 1 else ""}.'
+               f' Has {self.likes()} like{"s" if self.likes() != 1 else ""}.'
 
     def serialize(self, tzname=None):
         if not tzname:

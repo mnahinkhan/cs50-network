@@ -45,6 +45,13 @@
     a {
       filter: brightness(50%);
     }
+    
+
+
+    a:hover {
+      filter: brightness(30%);
+      text-decoration: none;
+    }
   }
 }
 
@@ -64,4 +71,25 @@
     border: 0;
     outline: 0;
   }
+}
+
+.profile-name-section {
+  margin-top: 30px;
+  h3 {
+    text-align: center;
+  }
+}
+
+.follow-info-section {
+  p {
+    text-align: center;
+  }
+}
+
+p#no-following-message {
+  margin-top: 40vh;
+  text-align: center;
+  font-family: sans-serif;
+  font-size: 200%;
+
 }
