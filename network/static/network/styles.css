@@ -30,6 +30,9 @@
 .post .post-submit button:hover {
   filter: brightness(90%);
 }
+.post .author a {
+  filter: brightness(50%);
+}
 
 .post-content-editable textarea {
   border: 0;

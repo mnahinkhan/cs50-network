@@ -65,7 +65,9 @@ class EditablePost extends React.Component {
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
-                                <p><strong>{this.props.username}</strong> says:</p>
+                                <p><a href={`/view-posts/${this.props.username}/`} style={{color: this.props.color}}>
+                                    <strong>{this.props.username}</strong></a> says:</p>
+
                             </div>
                             <div className="col-6 time">
                                 <p>{this.state.current_time}</p>
@@ -95,6 +97,7 @@ class EditablePost extends React.Component {
 }
 
 class Post extends React.Component {
+
     render() {
         const styles={backgroundColor: this.props.color};
         return (
@@ -103,7 +106,8 @@ class Post extends React.Component {
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
-                                <p><strong>{this.props.author}</strong> says:</p>
+                                <p><a href={`/view-posts/${this.props.author}/`} style={{color: this.props.color}}>
+                                    <strong>{this.props.author}</strong></a> says:</p>
                             </div>
                             <div className="col-6 time">
                                 <p>{this.props.time}</p>
@@ -134,8 +138,7 @@ class App extends React.Component {
 
     render() {
         const posts = this.props.posts;
-        console.log(posts);
-        const all_posts = posts.map((post, i) => <Post text={post.content} key={post.id} author={post.author}
+        const all_posts = posts.map(post => <Post text={post.content} key={post.id} author={post.author}
                                                        time={post.time_modified} likes={post.likes}
                                                        color={post.color}/>);
         const editable_post = this.props.username !== "" && <EditablePost username={this.props.username}
@@ -149,19 +152,19 @@ class App extends React.Component {
     }
 }
 
-let latest_posts_loaded = "";
+
 function load_posts(which_posts) {
     // which_posts can be either "all" or a username or "following"
-    latest_posts_loaded = which_posts;
+
     Promise.all(
         [
             fetch(`/posts/${which_posts}`).then(response=>response.json()),
-            fetch('get-username').then(response=>response.json())
+            fetch('/get-username').then(response=>response.json())
         ])
         .then(all_responses => {
-        const [posts, username_object] = all_responses;
-        const username = username_object["username"];
-        const color = username_object["color"];
+        const [posts, editable_post_info] = all_responses;
+        const username = editable_post_info["username"];
+        const color = editable_post_info["color"];
         ReactDOM.render(<App posts={posts} username={username} user_color={color}/>, document.querySelector("#app"));
     })
         .catch(error => {
@@ -171,15 +174,15 @@ function load_posts(which_posts) {
             if (which_posts !== "all") load_posts("all");
         });
 
-    document.querySelector('#all-posts-link').addEventListener('click', () => load_posts("all"));
-    document.querySelector('#following-link').addEventListener('click', () => load_posts("following"))
+
+    const page_title = which_posts==="all" ? "All posts" : which_posts==="following" ? "Posts by people you follow" : `Posts by ${which_posts}`;
+    document.querySelector('title').innerHTML = `Social Network - ${page_title}`;
+
 
 
 }
 
-function reload_posts() {
-    load_posts(latest_posts_loaded);
-}
+
 function get_current_time() {
     return new Date().toLocaleTimeString([], {month: 'short', day: 'numeric', hour: 'numeric',
         minute: '2-digit', second: '2-digit', timeZone: "Asia/Qatar"})
@@ -187,4 +190,16 @@ function get_current_time() {
     // to using Qatar timezone.
 
 }
-load_posts("all");
+
+function first_load() {
+    load_posts(which_posts_to_load);
+}
+
+function reload_posts() {
+    load_posts("all", true);
+}
+
+first_load();
+
+
+

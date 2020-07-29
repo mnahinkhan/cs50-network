@@ -40,6 +40,12 @@
       filter: brightness(90%);
     }
   }
+
+  .author {
+    a {
+      filter: brightness(50%);
+    }
+  }
 }
 
 .post-content-editable {

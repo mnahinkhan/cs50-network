@@ -8,9 +8,11 @@ from django.urls import reverse
 from django.core import serializers
 from .models import User, Post, color_mapper_dict
 
-def index(request):
+
+def index(request, which_posts="all"):
     return render(request, "network/index.html", {
         "posts": serializers.serialize('json', Post.objects.all()),
+        "which_posts": which_posts
     })
 
 
@@ -98,4 +100,3 @@ def post(request):
 
     Post(writer=request.user, content=request.POST['content']).save()
     return JsonResponse({"success": "message posted successfully!"})
-
