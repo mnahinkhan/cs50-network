@@ -4,6 +4,12 @@
   border-radius: 10px;
   padding-top: 10px;
 
+
+  .post-content {
+   p {
+     white-space: pre-wrap;
+   }
+  }
   .time {
     p {
       text-align: right;
@@ -92,4 +98,38 @@ p#no-following-message {
   font-family: sans-serif;
   font-size: 200%;
 
+}
+
+@keyframes post-animation {
+  0% {
+    //filter: brightness(200%);
+    line-height: 0;
+    height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+
+  75% {
+    //filter: brightness(200%);
+    line-height: inherit;
+    height: inherit;
+    opacity: 0;
+    padding: inherit;
+
+  }
+
+  100% {
+    //filter: brightness(100%);
+    line-height: inherit;
+    opacity: 1;
+    margin: inherit;
+  }
+}
+
+.post-animate {
+  animation-name: post-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
 }

@@ -3,6 +3,9 @@
   border-radius: 10px;
   padding-top: 10px;
 }
+.post .post-content p {
+  white-space: pre-wrap;
+}
 .post .time p {
   text-align: right;
   color: gray;
@@ -67,6 +70,32 @@ p#no-following-message {
   text-align: center;
   font-family: sans-serif;
   font-size: 200%;
+}
+
+@keyframes post-animation {
+  0% {
+    line-height: 0;
+    height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+  }
+  75% {
+    line-height: inherit;
+    height: inherit;
+    opacity: 0;
+    padding: inherit;
+  }
+  100% {
+    line-height: inherit;
+    opacity: 1;
+    margin: inherit;
+  }
+}
+.post-animate {
+  animation-name: post-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
 }
 
 /*# sourceMappingURL=styles.css.map */

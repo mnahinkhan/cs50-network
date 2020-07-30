@@ -126,7 +126,8 @@ class Post extends React.Component {
         const styles={backgroundColor: this.props.color};
         return (
             <div className="row">
-                <div className="col-12 col-md-8 offset-md-2 post" style={styles}>
+                <div className={`col-12 col-md-8 offset-md-2 post 
+                ${this.props.animate ? "post-animate" : ""}`} style={styles}>
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
@@ -164,7 +165,8 @@ class App extends React.Component {
         const posts = this.props.posts;
         const all_posts = posts.length > 0 ? posts.map(post => <Post text={post.content} key={post.id} author={post.author}
                                                        time={post.time_modified} likes={post.likes}
-                                                                     color={post.color}/>) :
+                                                                     color={post.color}
+                                                                     animate={this.props.animate_post_ids.includes(post.id)}/>) :
             <p id="no-following-message">
                 Try following some people to see posts by them here!
             </p>;
@@ -184,7 +186,8 @@ class App extends React.Component {
     }
 }
 
-
+let previous_post_ids = [];
+let current_post_ids = [];
 function load_posts(which_posts) {
     // which_posts can be either "all" or a username or "following"
     // Am I loading another profile?
@@ -197,15 +200,22 @@ function load_posts(which_posts) {
         ])
         .then(all_responses => {
         const [posts, editable_post_info, profile_info] = all_responses;
-        console.log(profile_info);
+        current_post_ids = (posts.map(post => post.id));
+        const animate_post_ids = previous_post_ids.length!==0 ? current_post_ids.filter(id=> !previous_post_ids.includes(id)) : [];
+        console.log(previous_post_ids);
+        console.log(animate_post_ids);
+        previous_post_ids = current_post_ids;
 
-        ReactDOM.render(<App posts={posts} // whichever posts need to be shown
+
+            ReactDOM.render(<App posts={posts} // whichever posts need to be shown
                              include_editable_post={which_posts==="all" && editable_post_info.username!==""}
                              editable_post_info={editable_post_info} // in case "all", then this comes useful for editable post
                              include_profile={include_profile}
                              profile_info={profile_info} // If we are checking out a user's profile page
+                             animate_post_ids = {animate_post_ids}
             />,
             document.querySelector("#app"));
+
     })
         .catch(error => {
             // error is likely due to seeking "following" posts when authentication cannot be verified
