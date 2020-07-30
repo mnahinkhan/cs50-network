@@ -200,10 +200,13 @@ function load_posts(which_posts) {
         ])
         .then(all_responses => {
         const [posts, editable_post_info, profile_info] = all_responses;
+
         current_post_ids = (posts.map(post => post.id));
+        // animate new posts, unless this is the first time we are loading all the posts!
+            // (that means everything would be new)
         const animate_post_ids = previous_post_ids.length!==0 ? current_post_ids.filter(id=> !previous_post_ids.includes(id)) : [];
-        console.log(previous_post_ids);
-        console.log(animate_post_ids);
+
+        // for next round
         previous_post_ids = current_post_ids;
 
 

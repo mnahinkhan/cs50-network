@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="f5f244b4-07cc-4482-abc4-5f18f264836a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network/static/network/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network/static/network/styles.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/network/static/network/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +71,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595602526231</updated>
-      <workItem from="1595602529709" duration="48919000" />
+      <workItem from="1595602529709" duration="49195000" />
     </task>
     <task id="LOCAL-00001" summary="made relevant models for the project">
       <created>1595623603420</created>
@@ -126,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596038248493</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Animated post creation">
+      <created>1596122794628</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1596122794628</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,13 +154,14 @@
     <MESSAGE value="Implemented submitting posts" />
     <MESSAGE value="Used a href links for simple back and forth history browser mechanisms" />
     <MESSAGE value="Created profile page title and follower/following info" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created profile page title and follower/following info" />
+    <MESSAGE value="Animated post creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Animated post creation" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596038248343">
+    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596122794484">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596038248343" />
+    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596122794484" />
     <state x="413" y="310" key="EditFileWatcherDialog" timestamp="1595609166980">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -170,10 +174,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="341" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1596034550665" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1596038251004">
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1596122795809">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1596038251004" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1596122795809" />
     <state x="498" y="282" width="683" height="486" key="find.popup" timestamp="1596030229859">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
