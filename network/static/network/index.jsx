@@ -129,8 +129,15 @@ class Post extends React.Component {
         }
     }
     like_post() {
+
         if (logged_in_user==="") {
             // nobody is logged in. Do nothing!
+            document.querySelector('#log-in-button').style.color = 'red';
+            document.querySelector('#log-in-button').style.fontWeight = 'bolder';
+            setTimeout(() => {
+                document.querySelector('#log-in-button').style.color = 'gray';
+                document.querySelector('#log-in-button').style.fontWeight = 'inherit';
+            }, 1000 );
             return
         }
 
