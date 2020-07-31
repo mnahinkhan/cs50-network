@@ -18,6 +18,13 @@
 .post .post-likes strong {
   font-weight: bolder;
 }
+.post .post-likes .no-of-likes {
+  margin-left: 13px;
+  margin-top: 1px;
+}
+.post .post-likes .heart-section {
+  margin-top: 10px;
+}
 .post .post-submit button {
   padding-left: 20px;
   padding-right: 20px;
@@ -96,6 +103,58 @@ p#no-following-message {
   animation-name: post-animation;
   animation-fill-mode: forwards;
   animation-duration: 2s;
+}
+
+.heart {
+  transform: rotate(45deg);
+  height: 10px;
+  width: 10px;
+  animation-name: heart_grow;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+
+.heart:hover {
+  cursor: pointer;
+}
+
+.heart:before,
+.heart:after {
+  content: "";
+  background: inherit;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  animation-name: heart_grow;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+
+.heart:before {
+  top: 0;
+  left: -5px;
+}
+
+.heart:after {
+  top: -5px;
+  left: 0;
+}
+
+@keyframes heart_grow {
+  from {
+    height: 0;
+  }
+  to {
+    height: inherit;
+  }
+}
+.heart.liked {
+  background: red;
+}
+
+.heart.not-liked {
+  filter: brightness(80%);
 }
 
 /*# sourceMappingURL=styles.css.map */

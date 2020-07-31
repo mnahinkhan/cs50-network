@@ -25,6 +25,15 @@
     strong {
       font-weight: bolder;
     }
+
+    .no-of-likes {
+      margin-left: 13px;
+      margin-top: 1px;
+    }
+
+    .heart-section {
+      margin-top: 10px;
+    }
   }
 
   .post-submit {
@@ -132,4 +141,62 @@ p#no-following-message {
   animation-name: post-animation;
   animation-fill-mode: forwards;
   animation-duration: 2s;
+}
+
+$heart_size: 10px;
+$heart_animation_duration: 1s;
+.heart {
+  transform: rotate(45deg);
+  height: $heart_size;
+  width: $heart_size;
+  animation-name: heart_grow;
+  animation-fill-mode: forwards;
+  animation-duration: $heart_animation_duration;
+
+}
+.heart:hover {
+  cursor: pointer;
+}
+
+.heart:before,
+.heart:after {
+  content: "";
+  background: inherit;
+  border-radius: 50%;
+  height: $heart_size;
+  width: $heart_size;
+  position: absolute;
+  animation-name: heart_grow;
+  animation-fill-mode: forwards;
+  animation-duration: $heart_animation_duration;
+}
+
+.heart:before {
+  top: 0;
+  left: $heart_size / -2;
+}
+
+.heart:after {
+  top: $heart_size / -2;
+  left: 0;
+}
+
+@keyframes heart_grow {
+  from {
+    height: 0;
+  }
+
+  to {
+    height: inherit;
+  }
+}
+
+.heart.liked {
+  background: red;
+
+}
+
+.heart.not-liked {
+  filter: brightness(80%);
+//  background is set by jsx
 }

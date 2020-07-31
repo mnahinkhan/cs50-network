@@ -61,8 +61,7 @@ class EditablePost extends React.Component {
             .then(response => response.json())
             .then(result => {
                 if ("success" in result) {
-                    // The email was sent successfully!
-                    reload_posts();
+                    load_posts("all");
                     this.setState({
                         post_content: ""
                     });
@@ -82,10 +81,10 @@ class EditablePost extends React.Component {
 
 
     render() {
-        const styles = {backgroundColor: this.props.color};
+        const fav_color_style = {backgroundColor: this.props.color};
         return(
             <div className="row">
-                <div className="col-12 col-md-8 offset-md-2 post" style={styles}>
+                <div className="col-12 col-md-8 offset-md-2 post" style={fav_color_style}>
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
@@ -99,14 +98,14 @@ class EditablePost extends React.Component {
                         </div>
                         <div className="row post-body">
                             <div className="col-12 post-content-editable">
-                                <textarea placeholder="What are you thinking today? Type away!...." style={styles}
+                                <textarea placeholder="What are you thinking today? Type away!...." style={fav_color_style}
                                           value={this.state.post_content} onChange={this.typed}>
 
                                 </textarea>
                             </div>
                         </div>
                         <div className="row post-submit">
-                            <button type="submit" style={styles} onClick={this.submitPost.bind(this)}>
+                            <button type="submit" style={fav_color_style} onClick={this.submitPost.bind(this)}>
                                 <span id="submit-button-text" style={{color: this.props.color}}>Post!</span>
                             </button>
                         </div>
@@ -122,12 +121,51 @@ class EditablePost extends React.Component {
 
 class Post extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            liked: this.props.liked,
+            likes: this.props.likes
+        }
+    }
+    like_post() {
+        if (logged_in_user==="") {
+            // nobody is logged in. Do nothing!
+            return
+        }
+
+        const new_liked_state = !this.state.liked;
+        // update the liked status of this post on the client side
+        this.setState({
+            liked: new_liked_state,
+            likes: this.state.likes + (new_liked_state ? +1 : -1)
+        });
+        // let the server know that this user has liked / disliked the post. We don't care about the response and hope
+        // for the best.
+
+
+        const csrf_token = getCookie('csrftoken');
+        fetch(`/like-post/${this.props.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                liked: new_liked_state
+            }),
+            credentials: 'same-origin',
+            headers: {"X-CSRFToken": csrf_token}
+        }).then();
+
+
+
+
+
+    };
+
     render() {
-        const styles={backgroundColor: this.props.color};
+        const fav_color_style={backgroundColor: this.props.color};
         return (
             <div className="row">
                 <div className={`col-12 col-md-8 offset-md-2 post 
-                ${this.props.animate ? "post-animate" : ""}`} style={styles}>
+                ${this.props.animate ? "post-animate" : ""}`} style={fav_color_style}>
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
@@ -143,10 +181,16 @@ class Post extends React.Component {
                                 <p>{this.props.text}</p>
                             </div>
                         </div>
-                        <div className="row post-likes">
-                            <div className="col-12">
+                        <div className="row post-likes no-gutters">
+                            <div className="col-auto heart-section">
                                 {/*    insert heart symbol here*/}
-                                <p><strong>{this.props.likes}</strong> like{this.props.likes!==1 ? 's' : '' }</p>
+                                <div className={`heart ${this.state.liked ? "liked" : "not-liked"}`}
+                                     style={this.state.liked ? {} : fav_color_style} onClick={this.like_post.bind(this)}>
+
+                                </div>
+                            </div>
+                            <div className="col no-of-likes">
+                                <p ><strong>{this.state.likes}</strong> like{this.state.likes!==1 ? 's' : '' }</p>
                             </div>
                         </div>
                     </div>
@@ -164,8 +208,8 @@ class App extends React.Component {
     render() {
         const posts = this.props.posts;
         const all_posts = posts.length > 0 ? posts.map(post => <Post text={post.content} key={post.id} author={post.author}
-                                                       time={post.time_modified} likes={post.likes}
-                                                                     color={post.color}
+                                                       time={post.time_modified} likes={post.likes} liked={post.liked}
+                                                                     color={post.color} id={post.id}
                                                                      animate={this.props.animate_post_ids.includes(post.id)}/>) :
             <p id="no-following-message">
                 Try following some people to see posts by them here!
@@ -188,6 +232,8 @@ class App extends React.Component {
 
 let previous_post_ids = [];
 let current_post_ids = [];
+let logged_in_user = ""; // global variable to keep track of who is currently logged in
+
 function load_posts(which_posts) {
     // which_posts can be either "all" or a username or "following"
     // Am I loading another profile?
@@ -208,6 +254,9 @@ function load_posts(which_posts) {
 
         // for next round
         previous_post_ids = current_post_ids;
+
+        // update currently logged in user
+        logged_in_user = editable_post_info.username; // should be "" if no one is logged in
 
 
             ReactDOM.render(<App posts={posts} // whichever posts need to be shown
@@ -248,11 +297,24 @@ function first_load() {
     load_posts(which_posts_to_load);
 }
 
-function reload_posts() {
-    load_posts("all", true);
-}
 
 first_load();
 
 
-
+// The following function is copied from
+// https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

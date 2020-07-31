@@ -2,13 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5f244b4-07cc-4482-abc4-5f18f264836a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/static/network/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/static/network/styles.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/static/network/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="db" type="feb32156:DbDataSourceImpl" />
+        <item name="collations" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
@@ -71,7 +104,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595602526231</updated>
-      <workItem from="1595602529709" duration="49195000" />
+      <workItem from="1595602529709" duration="57655000" />
     </task>
     <task id="LOCAL-00001" summary="made relevant models for the project">
       <created>1595623603420</created>
@@ -129,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596122794628</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="comments">
+      <created>1596122931372</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1596122931372</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,13 +195,14 @@
     <MESSAGE value="Used a href links for simple back and forth history browser mechanisms" />
     <MESSAGE value="Created profile page title and follower/following info" />
     <MESSAGE value="Animated post creation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Animated post creation" />
+    <MESSAGE value="comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="comments" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596122794484">
+    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596122931279">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596122794484" />
+    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596122931279" />
     <state x="413" y="310" key="EditFileWatcherDialog" timestamp="1595609166980">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

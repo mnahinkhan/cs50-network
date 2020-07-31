@@ -83,7 +83,9 @@ def get_posts(request, which_posts):
 
     ordered_posts = posts.order_by("-datetime_modified").all()
     tzname = request.session.get('django_timezone')
-    return JsonResponse([post.serialize(tzname=tzname) for post in ordered_posts], safe=False)
+    logged_in_user = request.user if request.user.is_authenticated else None
+    return JsonResponse([post.serialize(tzname=tzname,
+                                        logged_in_user=logged_in_user) for post in ordered_posts], safe=False)
 
 
 def get_username(request):
@@ -106,3 +108,24 @@ def get_profile_info(request, profile_name):
     user = User.objects.get(username=profile_name)
     return JsonResponse({"username": user.username, "follower_no": user.number_of_followers(),
                          "following_no": user.number_of_following()})
+
+
+def like_post(request, post_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please be logged in to post to the server"}, status=400)
+    data = json.loads(request.body)
+    if 'liked' not in data:
+        return JsonResponse({"error": "Please specify if the post is to be liked or not"}, status=400)
+    liked = json.loads(request.body)['liked']
+    post_to_like = Post.objects.get(id=post_id)
+
+    if liked:
+        request.user.liked_posts.add(post_to_like)
+    else:
+        request.user.liked_posts.remove(post_to_like)
+
+    # for some reason I don't really have to do request.user.save() ???
+
+    return HttpResponse(status=204)

@@ -57,7 +57,7 @@ class Post(models.Model):
         return f'Post by {self.writer} saying "{self.content}".' \
                f' Has {self.likes()} like{"s" if self.likes() != 1 else ""}.'
 
-    def serialize(self, tzname=None):
+    def serialize(self, tzname=None, logged_in_user=None):
         if not tzname:
             tzname = "Asia/Qatar"
         timezone.activate(pytz.timezone(tzname))
@@ -67,5 +67,6 @@ class Post(models.Model):
             "content": self.content,
             "time_modified": localtime(self.datetime_modified).strftime('%b %d, %I:%M %p'),
             "likes": self.likes(),
-            "color": color_mapper_dict[self.writer.color]
+            "color": color_mapper_dict[self.writer.color],
+            "liked": logged_in_user in self.liking_users.all() if logged_in_user else False
         }
