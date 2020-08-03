@@ -200,3 +200,20 @@ $heart_animation_duration: 1s;
   filter: brightness(80%);
 //  background is set by jsx
 }
+
+.follow-button-section {
+  button {
+    background: white;
+    border-color: black;
+    border-width: 1.5px;
+    border-radius: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  button:hover {
+    background: lightgray;
+  }
+}

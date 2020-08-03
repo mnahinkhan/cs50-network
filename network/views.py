@@ -107,7 +107,9 @@ def post(request):
 def get_profile_info(request, profile_name):
     user = User.objects.get(username=profile_name)
     return JsonResponse({"username": user.username, "follower_no": user.number_of_followers(),
-                         "following_no": user.number_of_following()})
+                         "following_no": user.number_of_following(),
+                         "following": user.followers.filter(
+                             pk=request.user.pk).exists() if request.user.is_authenticated else None})
 
 
 def like_post(request, post_id):
@@ -127,5 +129,25 @@ def like_post(request, post_id):
         request.user.liked_posts.remove(post_to_like)
 
     # for some reason I don't really have to do request.user.save() ???
+
+    return HttpResponse(status=204)
+
+
+def follow_profile(request, profile_username):
+    # Very much copied and adapted from like_post()
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please be logged in to follow/unfollow on the server"}, status=400)
+    data = json.loads(request.body)
+    if 'following' not in data:
+        return JsonResponse({"error": "Please specify if the profile is to be followed or not"}, status=400)
+    following = json.loads(request.body)['following']
+    profile_to_follow = User.objects.get(username=profile_username)
+
+    if following:
+        request.user.following.add(profile_to_follow)
+    else:
+        request.user.following.remove(profile_to_follow)
 
     return HttpResponse(status=204)

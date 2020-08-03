@@ -157,4 +157,18 @@ p#no-following-message {
   filter: brightness(80%);
 }
 
+.follow-button-section button {
+  background: white;
+  border-color: black;
+  border-width: 1.5px;
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.follow-button-section button:hover {
+  background: lightgray;
+}
+
 /*# sourceMappingURL=styles.css.map */

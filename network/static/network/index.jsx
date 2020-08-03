@@ -1,4 +1,33 @@
 class ProfileTitle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            following: this.props.following,
+            follower_no: this.props.follower_no
+        }
+    }
+
+    follow_button_click() {
+        const new_following_state = !this.state.following;
+        // update the following status of this profile on the client side
+        this.setState({
+            following: new_following_state,
+            follower_no: this.state.follower_no + (new_following_state ? 1 : -1)
+        });
+        // let the server know that this user has followed / unfollowed the profile.
+        // We don't care about the response and hope for the best.
+
+        const csrf_token = getCookie('csrftoken');
+        fetch(`/follow-profile/${this.props.username}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                following: new_following_state
+            }),
+            credentials: 'same-origin',
+            headers: {"X-CSRFToken": csrf_token}
+        }).then();
+    }
+
     render () {
         return(
             [<div key="profile-name-section" className="row profile-name-section">
@@ -10,13 +39,20 @@ class ProfileTitle extends React.Component {
                 <div className="col-12">
                     <p>
                         <strong>
-                            {this.props.follower_no}
+                            {this.state.follower_no}
                         </strong>
-                        &ensp;follower{this.props.follower_no!==1 ? 's' : ''}  &ensp;|
+                        &ensp;follower{this.state.follower_no!==1 ? 's' : ''}  &ensp;|
                         &ensp;<strong>{this.props.following_no}</strong>
                         &ensp; following</p>
                 </div>
-            </div>
+            </div>,
+                this.props.following!==null && <div key="follow-button-section" className="row follow-button-section">
+                    <div className="col-12 d-flex justify-content-center">
+                        <button onClick={this.follow_button_click.bind(this)}>
+                            {this.state.following ? "Unfollow" : "Follow"}
+                        </button>
+                    </div>
+                </div>
         ]
         )
     }
@@ -226,7 +262,7 @@ class App extends React.Component {
 
         const profile_info = this.props.include_profile &&
             <ProfileTitle username={this.props.profile_info.username} follower_no={this.props.profile_info.follower_no}
-                          following_no={this.props.profile_info.following_no}/>;
+                          following_no={this.props.profile_info.following_no} following={this.props.profile_info.following}/>;
         return (
             <div className="container">
                 {profile_info}
@@ -243,8 +279,13 @@ let logged_in_user = ""; // global variable to keep track of who is currently lo
 
 function load_posts(which_posts) {
     // which_posts can be either "all" or a username or "following"
+
+
+
     // Am I loading another profile?
     const include_profile = which_posts !== "all" && which_posts !== "following";
+
+    // Get a bunch of data
     Promise.all(
         [
             fetch(`/posts/${which_posts}`).then(response=>response.json()),
@@ -252,18 +293,26 @@ function load_posts(which_posts) {
             include_profile && fetch(`/get-profile-info/${which_posts}`).then(response => response.json())
         ])
         .then(all_responses => {
-        const [posts, editable_post_info, profile_info] = all_responses;
+            // collect the data
+            const [posts, editable_post_info, profile_info] = all_responses;
 
-        current_post_ids = (posts.map(post => post.id));
-        // animate new posts, unless this is the first time we are loading all the posts!
+            // update currently logged in user
+            logged_in_user = editable_post_info.username; // should be "" if no one is logged in
+
+            // In case we are loading a profile, make sure that the logged in user can't follow/unfollow themselves!
+            if (include_profile && logged_in_user===profile_info.username) profile_info.following = null;
+            console.log(profile_info);
+
+            current_post_ids = (posts.map(post => post.id));
+            // animate new posts, unless this is the first time we are loading all the posts!
             // (that means everything would be new)
-        const animate_post_ids = previous_post_ids.length!==0 ? current_post_ids.filter(id=> !previous_post_ids.includes(id)) : [];
+            const animate_post_ids = previous_post_ids.length!==0 ?
+                current_post_ids.filter(id=> !previous_post_ids.includes(id)) : [];
 
-        // for next round
-        previous_post_ids = current_post_ids;
+            // for next round
+            previous_post_ids = current_post_ids;
 
-        // update currently logged in user
-        logged_in_user = editable_post_info.username; // should be "" if no one is logged in
+
 
 
             ReactDOM.render(<App posts={posts} // whichever posts need to be shown
