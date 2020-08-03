@@ -245,6 +245,51 @@ class Post extends React.Component {
     }
 }
 
+class PaginationNav extends React.Component {
+    render() {
+        console.log(this.props.page_number);
+        const prev_button = this.props.page_number === 1
+            ?
+            <li className="page-item disabled">
+                <a className="page-link" href="#" tabIndex="-1">Previous</a>
+            </li>
+            :
+            <li className="page-item">
+                <a className="page-link" href={`/view-posts/${this.props.which_posts}/${this.props.page_number-1}`}>Previous</a>
+            </li>;
+
+        const number_buttons = [];
+        for (let i = 1; i<= this.props.upper_page_limit; i++) {
+            number_buttons.push(
+                <li className={`page-item ${this.props.page_number===i ? 'active' : ''}`} key={i}>
+                    <a className="page-link" href={`/view-posts/${this.props.which_posts}/${i}`}>{i}</a>
+                    {/* possible to support assistive tech better here*/}
+                </li>
+            )
+        }
+
+        const next_button = this.props.page_number < this.props.upper_page_limit
+            ?
+            <li className="page-item">
+                <a className="page-link" href={`/view-posts/${this.props.which_posts}/${this.props.page_number + 1}`}>
+                    Next
+                </a>
+            </li>
+            :
+            <li className="page-item disabled">
+                <a className="page-link" href="#" tabIndex="-1">Next</a>
+            </li>;
+        return (
+            <nav aria-label="navigation for page number of posts displayed" id="paginator_navigator">
+                <ul className="pagination justify-content-center">
+                    {prev_button}
+                    {number_buttons}
+                    {next_button}
+                </ul>
+            </nav>
+        )
+    }
+}
 class App extends React.Component {
 
 
@@ -263,11 +308,16 @@ class App extends React.Component {
         const profile_info = this.props.include_profile &&
             <ProfileTitle username={this.props.profile_info.username} follower_no={this.props.profile_info.follower_no}
                           following_no={this.props.profile_info.following_no} following={this.props.profile_info.following}/>;
+
+        const pagination_nav = <PaginationNav page_number={this.props.page_number}
+                                              upper_page_limit={this.props.upper_page_limit}
+                                              which_posts={this.props.which_posts} />;
         return (
             <div className="container">
                 {profile_info}
                 {editable_post}
                 {all_posts}
+                {pagination_nav}
             </div>
         );
     }
@@ -277,24 +327,24 @@ let previous_post_ids = [];
 let current_post_ids = [];
 let logged_in_user = ""; // global variable to keep track of who is currently logged in
 
-function load_posts(which_posts) {
+function load_posts(which_posts, page_number) {
     // which_posts can be either "all" or a username or "following"
-
-
-
+    console.log(page_number);
+    if (page_number===undefined) page_number = 1;
+    console.log(page_number);
     // Am I loading another profile?
     const include_profile = which_posts !== "all" && which_posts !== "following";
 
     // Get a bunch of data
     Promise.all(
         [
-            fetch(`/posts/${which_posts}`).then(response=>response.json()),
+            fetch(`/posts/${which_posts}/${page_number}`).then(response=>response.json()),
             fetch('/get-username').then(response=>response.json()),
             include_profile && fetch(`/get-profile-info/${which_posts}`).then(response => response.json())
         ])
         .then(all_responses => {
             // collect the data
-            const [posts, editable_post_info, profile_info] = all_responses;
+            const [posts_info, editable_post_info, profile_info] = all_responses;
 
             // update currently logged in user
             logged_in_user = editable_post_info.username; // should be "" if no one is logged in
@@ -303,6 +353,9 @@ function load_posts(which_posts) {
             if (include_profile && logged_in_user===profile_info.username) profile_info.following = null;
             console.log(profile_info);
 
+
+            const posts = posts_info.posts;
+            const upper_page_limit = posts_info.upper_page_limit;
             current_post_ids = (posts.map(post => post.id));
             // animate new posts, unless this is the first time we are loading all the posts!
             // (that means everything would be new)
@@ -320,7 +373,8 @@ function load_posts(which_posts) {
                              editable_post_info={editable_post_info} // in case "all", then this comes useful for editable post
                              include_profile={include_profile}
                              profile_info={profile_info} // If we are checking out a user's profile page
-                             animate_post_ids = {animate_post_ids}
+                             animate_post_ids={animate_post_ids} page_number={page_number} upper_page_limit={upper_page_limit}
+                                 which_posts={which_posts}
             />,
             document.querySelector("#app"));
 
@@ -350,7 +404,7 @@ function get_current_time() {
 }
 
 function first_load() {
-    load_posts(which_posts_to_load);
+    load_posts(which_posts_to_load, page_number_requested);
 }
 
 

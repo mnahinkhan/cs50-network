@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="f5f244b4-07cc-4482-abc4-5f18f264836a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/styles.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.css.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/static/network/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/network/static/network/styles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/network/templates/network/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/network/templates/network/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/network/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/network/views.py" afterDir="false" />
     </list>
@@ -47,6 +47,11 @@
     <favorites_list name="project4" />
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Nahin &lt;mnk1@andrew.cmu.edu&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1f8bAwxur2SJBJaNSgE6Fh1bScN" />
@@ -101,7 +106,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1595602526231</updated>
-      <workItem from="1595602529709" duration="62331000" />
+      <workItem from="1595602529709" duration="66058000" />
     </task>
     <task id="LOCAL-00001" summary="made relevant models for the project">
       <created>1595623603420</created>
@@ -180,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1596219649631</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added ability to follow and unfollow users on the Network">
+      <created>1596418155980</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1596418155980</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,13 +221,14 @@
     <MESSAGE value="comments" />
     <MESSAGE value="Made liking feature" />
     <MESSAGE value="emphasised need to log in to like posts" />
-    <option name="LAST_COMMIT_MESSAGE" value="emphasised need to log in to like posts" />
+    <MESSAGE value="Added ability to follow and unfollow users on the Network" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ability to follow and unfollow users on the Network" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596219649505">
+    <state x="283" y="127" key="CommitChangelistDialog2" timestamp="1596418155823">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596219649505" />
+    <state x="283" y="127" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1596418155823" />
     <state x="413" y="310" key="EditFileWatcherDialog" timestamp="1595609166980">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -228,17 +241,17 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="341" y="164" key="SettingsEditor/0.0.1680.1050@0.0.1680.1050" timestamp="1596034550665" />
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1596219650679">
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2" timestamp="1596418157850">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1596219650679" />
+    <state x="440" y="265" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1596418157850" />
     <state x="498" y="282" width="683" height="486" key="find.popup" timestamp="1596030229859">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="498" y="282" width="683" height="486" key="find.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1596030229859" />
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1596033129895">
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1596469237957">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1596033129895" />
+    <state x="505" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1596469237957" />
   </component>
 </project>

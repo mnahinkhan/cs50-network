@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator, EmptyPage
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -8,11 +9,14 @@ from django.urls import reverse
 from django.core import serializers
 from .models import User, Post, color_mapper_dict
 
+number_of_posts_per_page = 10
 
-def index(request, which_posts="all"):
+
+def index(request, which_posts="all", page_number=1):
     return render(request, "network/index.html", {
         "posts": serializers.serialize('json', Post.objects.all()),
-        "which_posts": which_posts
+        "which_posts": which_posts,
+        "page_number": page_number
     })
 
 
@@ -68,7 +72,7 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def get_posts(request, which_posts):
+def get_posts(request, which_posts, page_number=1):
     # which_posts can be either "all" or a username or "following"
     if which_posts == "all":
         posts = Post.objects
@@ -82,10 +86,21 @@ def get_posts(request, which_posts):
         posts = Post.objects.filter(writer__username=which_posts)
 
     ordered_posts = posts.order_by("-datetime_modified").all()
+    paginator = Paginator(ordered_posts, number_of_posts_per_page)
+    number_of_pages = paginator.num_pages
+    try:
+        page_requested = paginator.page(page_number)
+    except EmptyPage:
+        page_requested = paginator.page(1)
+        # a good thing here might be to issue a warning to the client for requesting a bad page
+    posts_in_page = page_requested.object_list
+
     tzname = request.session.get('django_timezone')
     logged_in_user = request.user if request.user.is_authenticated else None
-    return JsonResponse([post.serialize(tzname=tzname,
-                                        logged_in_user=logged_in_user) for post in ordered_posts], safe=False)
+    return JsonResponse({
+        "posts": [each_post.serialize(tzname=tzname, logged_in_user=logged_in_user) for each_post in posts_in_page],
+        "upper_page_limit": number_of_pages
+    }, safe=False)
 
 
 def get_username(request):

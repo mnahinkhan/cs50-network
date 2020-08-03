@@ -171,4 +171,8 @@ p#no-following-message {
   background: lightgray;
 }
 
+#paginator_navigator {
+  margin-top: 30px;
+}
+
 /*# sourceMappingURL=styles.css.map */
