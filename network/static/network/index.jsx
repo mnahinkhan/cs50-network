@@ -58,11 +58,44 @@ class ProfileTitle extends React.Component {
     }
 }
 
+const current_time_update_interval = 50; // in milliseconds. Only important if you care about sync in edit posts and
+// the "make a new post" post on top...
+
+class CurrentTime extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            current_time: get_current_time()
+        };
+    }
+
+    componentDidMount() {
+        this.intervalID = setInterval(() => {
+            this.setState({
+                current_time: get_current_time()
+            })
+        }, current_time_update_interval)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
+    }
+
+    render() {
+        return (
+            <p>{this.state.current_time}</p>
+        )
+    }
+
+
+}
+
 class EditablePost extends React.Component {
 
     constructor(props) {
         super(props);
-
+        this.textAreaRef = React.createRef();
         this.state = {
             current_time: get_current_time(),
             post_content: ""
@@ -81,6 +114,7 @@ class EditablePost extends React.Component {
         this.setState({
             post_content: event.target.value
         });
+        this.adjustTextAreaRows();
     };
 
     submitPost() {
@@ -101,6 +135,7 @@ class EditablePost extends React.Component {
                     this.setState({
                         post_content: ""
                     });
+                    this.adjustTextAreaRows(true);
                 }
 
                 if ("error" in result) {
@@ -114,7 +149,17 @@ class EditablePost extends React.Component {
             });
     }
 
+    adjustTextAreaRows = (reset) => {
+        setTimeout(() => {
+            if (reset) {
+                this.textAreaRef.current.rows = 2;
+            }
+            else {
+                this.textAreaRef.current.rows = get_text_area_height(this.textAreaRef.current)
+            }
+            }, 20);
 
+    };
 
     render() {
         const fav_color_style = {backgroundColor: this.props.color};
@@ -129,13 +174,14 @@ class EditablePost extends React.Component {
 
                             </div>
                             <div className="col-6 time">
-                                <p>{this.state.current_time}</p>
+                                <CurrentTime/>
                             </div>
                         </div>
                         <div className="row post-body">
                             <div className="col-12 post-content-editable">
                                 <textarea placeholder="What are you thinking today? Type away!...." style={fav_color_style}
-                                          value={this.state.post_content} onChange={this.typed}>
+                                          value={this.state.post_content} onChange={this.typed} ref={this.textAreaRef}
+                                          onFocus={this.adjustTextAreaRows}>
 
                                 </textarea>
                             </div>
@@ -159,10 +205,16 @@ class Post extends React.Component {
 
     constructor(props) {
         super(props);
+        this.textAreaRef = React.createRef();
         this.state = {
             liked: this.props.liked,
-            likes: this.props.likes
-        }
+            likes: this.props.likes,
+            text: this.props.text,
+            editing: false,
+            editing_text_content: "",
+            animate: this.props.animate,
+            fade_out: false
+        };
     }
     like_post() {
 
@@ -203,12 +255,92 @@ class Post extends React.Component {
 
     };
 
+    edit_post() {
+        this.setState({
+            editing: true,
+            editing_text_content: this.state.text
+        });
+    }
+
+    adjustTextAreaRows = () => {
+        setTimeout(()=> this.textAreaRef.current.rows = get_text_area_height(this.textAreaRef.current), 20);
+
+    };
+
+    typed = (event) => {
+        this.setState({
+            editing_text_content: event.target.value
+        });
+        this.adjustTextAreaRows();
+
+    };
+
+    save_changes() {
+        // did any changes occur??
+        if (this.state.text === this.state.editing_text_content) {
+            this.unfocused_box();
+            return
+        }
+
+        // change the post on client display
+        this.setState({
+            editing: false,
+            text: this.state.editing_text_content,
+            // animate: true,
+            fade_out: true
+        });
+
+        // let server know that such a change was made!
+        const csrf_token = getCookie('csrftoken');
+        fetch(`/update-post/${this.props.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                content: this.state.editing_text_content
+            }),
+            credentials: 'same-origin',
+            headers: {"X-CSRFToken": csrf_token}
+        }).then();
+
+
+
+    }
+
+    unfocused_box() {
+        this.setState({
+            editing: false
+        });
+    }
+
+
+    animate_end() {
+        if (this.state.fade_out && !this.state.animate) {
+            this.setState(
+                {
+                    animate: true,
+                    fade_out: false
+                }
+            );
+            load_posts(latest_which_post);
+
+        }
+        else if (!this.state.fade_out && this.state.animate) {
+            this.setState(
+                {
+                    animate: false,
+                    fade_out: false
+                }
+            )
+        }
+
+
+    }
+
     render() {
         const fav_color_style={backgroundColor: this.props.color};
         return (
             <div className="row">
                 <div className={`col-12 col-md-8 offset-md-2 post 
-                ${this.props.animate ? "post-animate" : ""}`} style={fav_color_style}>
+                ${this.state.animate ? "post-animate" : ""} ${this.state.fade_out ? "fade-out" : ""}`} style={fav_color_style} onAnimationEnd={this.animate_end.bind(this)}>
                     <div className="post-content container">
                         <div className="row post-info">
                             <div className="col-6 author">
@@ -216,13 +348,30 @@ class Post extends React.Component {
                                     <strong>{this.props.author}</strong></a> says:</p>
                             </div>
                             <div className="col-6 time">
-                                <p>{this.props.time}</p>
+                                {this.state.editing ?
+                                    <CurrentTime/>
+                                    :
+                                    <p>{this.props.time}</p>
+                                }
                             </div>
                         </div>
                         <div className="row post-body">
-                            <div className="col-12 post-content">
-                                <p>{this.props.text}</p>
-                            </div>
+
+                            {this.state.editing ?
+                                <div className="col-12 post-content-editing">
+                                    <textarea placeholder="edit your post here..."
+                                              style={fav_color_style}
+                                              value={this.state.editing_text_content} onChange={this.typed} autoFocus ref={this.textAreaRef} onFocus={this.adjustTextAreaRows}>
+
+                                    </textarea>
+                                </div>
+                                :
+                                <div className="col-12 post-content">
+                                    <p>{this.state.text}</p>
+                                </div>
+
+                            }
+
                         </div>
                         <div className="row post-likes no-gutters">
                             <div className="col-auto heart-section">
@@ -235,6 +384,21 @@ class Post extends React.Component {
                             <div className="col no-of-likes">
                                 <p ><strong>{this.state.likes}</strong> like{this.state.likes!==1 ? 's' : '' }</p>
                             </div>
+                            {logged_in_user===this.props.author &&
+                                <div className="col edit-post">
+                                    {this.state.editing ?
+                                        <p><span className="edit-post-text"
+                                                 onClick={this.save_changes.bind(this)}>Save changes</span>
+                                            &nbsp; &middot; &nbsp;
+                                            <span className="edit-post-text"
+                                                  onClick={this.unfocused_box.bind(this)}>Cancel edit</span>
+                                        </p>
+                                        :
+                                        <p><span className="edit-post-text"
+                                                 onClick={this.edit_post.bind(this)}>Edit post</span></p>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
 
@@ -247,7 +411,6 @@ class Post extends React.Component {
 
 class PaginationNav extends React.Component {
     render() {
-        console.log(this.props.page_number);
         const prev_button = this.props.page_number === 1
             ?
             <li className="page-item disabled">
@@ -326,12 +489,12 @@ class App extends React.Component {
 let previous_post_ids = [];
 let current_post_ids = [];
 let logged_in_user = ""; // global variable to keep track of who is currently logged in
+let latest_which_post = ""; // stores which posts were loaded most recently
 
 function load_posts(which_posts, page_number) {
     // which_posts can be either "all" or a username or "following"
-    console.log(page_number);
+    latest_which_post = which_posts;
     if (page_number===undefined) page_number = 1;
-    console.log(page_number);
     // Am I loading another profile?
     const include_profile = which_posts !== "all" && which_posts !== "following";
 
@@ -351,7 +514,6 @@ function load_posts(which_posts, page_number) {
 
             // In case we are loading a profile, make sure that the logged in user can't follow/unfollow themselves!
             if (include_profile && logged_in_user===profile_info.username) profile_info.following = null;
-            console.log(profile_info);
 
 
             const posts = posts_info.posts;
@@ -364,6 +526,8 @@ function load_posts(which_posts, page_number) {
 
             // for next round
             previous_post_ids = current_post_ids;
+
+
 
 
 
@@ -427,4 +591,12 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+// Derived from
+// https://stackoverflow.com/a/1761203/8551394
+function get_text_area_height(text_area_ref) {
+    const taLineHeight = 25; // This should match the line-height in the CSS
+    const taHeight = text_area_ref.scrollHeight; // Get the scroll height of the textarea
+    return Math.floor(taHeight / taLineHeight);
 }

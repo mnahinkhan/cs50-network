@@ -166,3 +166,22 @@ def follow_profile(request, profile_username):
         request.user.following.remove(profile_to_follow)
 
     return HttpResponse(status=204)
+
+
+def update_post(request, post_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Please be logged in to post to the server"}, status=400)
+    data = json.loads(request.body)
+    if 'content' not in data:
+        return JsonResponse({"error": "Please specify the new message"}, status=400)
+    new_message = json.loads(request.body)['content']
+    post_to_update = Post.objects.get(id=post_id)
+    if post_to_update.writer.pk != request.user.pk:
+        return JsonResponse({"error": "Only post owner can modify their own post!"}, status=400)
+
+    post_to_update.content = new_message
+    post_to_update.save()
+
+    return HttpResponse(status=204)

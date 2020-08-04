@@ -5,6 +5,7 @@
 }
 .post .post-content p {
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 .post .time p {
   text-align: right;
@@ -24,6 +25,19 @@
 }
 .post .post-likes .heart-section {
   margin-top: 10px;
+}
+.post .post-likes .edit-post p {
+  text-align: right;
+  font-size: 10px;
+  padding: 0;
+  margin: 10px 0 0;
+  color: gray;
+}
+.post .post-likes .edit-post p .edit-post-text {
+  cursor: pointer;
+}
+.post .post-likes .edit-post p .edit-post-text:hover {
+  color: white;
 }
 .post .post-submit button {
   padding-left: 20px;
@@ -52,12 +66,30 @@
   border: 0;
   width: 100%;
   resize: none;
+  line-height: 25px;
+  overflow-y: hidden;
 }
 .post-content-editable textarea::placeholder {
   color: gray;
 }
 .post-content-editable textarea:focus {
   border: 0;
+  outline: 0;
+}
+
+.post-content-editing textarea {
+  width: 100%;
+  resize: none;
+  border-color: red;
+  border-width: 0;
+  border-radius: 5px;
+  filter: brightness(120%);
+  line-height: 25px;
+}
+.post-content-editing textarea::placeholder {
+  color: gray;
+}
+.post-content-editing textarea:focus {
   outline: 0;
 }
 
@@ -173,6 +205,32 @@ p#no-following-message {
 
 #paginator_navigator {
   margin-top: 30px;
+}
+
+@keyframes fade-out-animation {
+  100% {
+    line-height: 0;
+    height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+  }
+  50% {
+    line-height: inherit;
+    height: inherit;
+    opacity: 0;
+    padding: inherit;
+  }
+  0% {
+    line-height: inherit;
+    opacity: 1;
+    margin: inherit;
+  }
+}
+.fade-out {
+  animation-name: fade-out-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
 }
 
 /*# sourceMappingURL=styles.css.map */

@@ -8,6 +8,7 @@
   .post-content {
    p {
      white-space: pre-wrap;
+     word-wrap: break-word;
    }
   }
   .time {
@@ -33,6 +34,22 @@
 
     .heart-section {
       margin-top: 10px;
+    }
+
+    .edit-post {
+      p {
+        text-align: right;
+        font-size: 10px;
+        padding: 0;
+        margin: 10px 0 0;
+        color: gray;
+        .edit-post-text {
+          cursor: pointer;
+        }
+        .edit-post-text:hover {
+          color: white;
+        }
+      }
     }
   }
 
@@ -70,11 +87,13 @@
   }
 }
 
-.post-content-editable {
+.post-content-editable{
   textarea {
     border: 0;
     width: 100%;
     resize: none;
+    line-height: 25px;
+    overflow-y: hidden;
 
   }
 
@@ -84,6 +103,26 @@
 
   textarea:focus {
     border: 0;
+    outline: 0;
+  }
+}
+
+.post-content-editing {
+  textarea {
+    width: 100%;
+    resize: none;
+    border-color: red;
+    border-width: 0;
+    border-radius: 5px;
+    filter: brightness(120%);
+    line-height: 25px;
+  }
+
+  textarea::placeholder {
+    color: gray;
+  }
+
+  textarea:focus {
     outline: 0;
   }
 }
@@ -221,4 +260,38 @@ $heart_animation_duration: 1s;
 
 #paginator_navigator {
   margin-top: 30px;
+}
+
+@keyframes fade-out-animation {
+  100% {
+    //filter: brightness(200%);
+    line-height: 0;
+    height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+
+  50% {
+    //filter: brightness(200%);
+    line-height: inherit;
+    height: inherit;
+    opacity: 0;
+    padding: inherit;
+
+  }
+
+  0% {
+    //filter: brightness(100%);
+    line-height: inherit;
+    opacity: 1;
+    margin: inherit;
+  }
+
+}
+.fade-out {
+  animation-name: fade-out-animation;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
 }
